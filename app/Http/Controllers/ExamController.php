@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExamController extends Controller
 {
@@ -47,6 +48,44 @@ class ExamController extends Controller
     public function show(Exam $exam)
     {
         //
+    }
+
+
+    public function showCalculatedExam($course_section_id, $exam_type)
+    {
+
+        if(Auth::check()) {
+
+            $exam = Exam::where('term', 'Fall 2019')
+                ->where('course_section_id', $course_section_id)
+                ->where('exam_type', $exam_type)
+                ->first();
+
+            if($exam_type == 'midterm') {
+
+                $anonymousId = Auth::user()->universityPerson->midtermAnonymousId;
+
+            } else {
+
+                $anonymousId = Auth::user()->universityPerson->finalAnonymousId;
+
+            }
+
+            if(empty($exam)) {
+
+                // todo - throw exception, Exam not found
+
+            }
+
+
+            return view('exam', [
+                'questions' => $exam->questions,
+                'exam_id' => $exam->id,
+                'examinee_id' => $anonymousId->id
+            ]);
+
+        }
+
     }
 
     /**
