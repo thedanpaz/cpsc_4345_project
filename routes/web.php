@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 
         // Check to see if the user has a universityPerson
-        if(empty(Auth::user()->universityPerson())) {
+        if(empty(Auth::user()->universityPerson)) {
 
             return redirect()->route('create-person-form');
 

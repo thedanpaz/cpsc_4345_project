@@ -53,8 +53,15 @@ class PersonController extends Controller
 
             $anonymousFinalExamId = new AnonymousIdNumber();
             $anonymousFinalExamId->uin = $person->id;
+            $anonymousFinalExamId->exam_type = 'midterm';
+            $anonymousFinalExamId->save();
+
+            $anonymousFinalExamId = new AnonymousIdNumber();
+            $anonymousFinalExamId->uin = $person->id;
             $anonymousFinalExamId->exam_type = 'final';
             $anonymousFinalExamId->save();
+
+            return redirect()->route('show-person');
 
         }
 
